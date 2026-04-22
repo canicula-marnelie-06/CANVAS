@@ -1,0 +1,209 @@
+/* ============================================================
+   style.css – Interactive Circle Canvas Activity
+   All styles are written here so that index.html stays clean
+   and uses only class/id references (no inline styles).
+   ============================================================ */
+
+
+/* ── Reset & Base ────────────────────────────────────────────
+   Apply box-sizing and remove default browser margin/padding
+   on every element so layouts behave consistently across
+   different browsers.
+   ──────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box; /* padding and border are included inside the element's total width/height */
+  margin: 0;              /* remove default outer spacing from all elements */
+  padding: 0;             /* remove default inner spacing from all elements */
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif; /* preferred readable system font stack */
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8edfb 100%); /* soft diagonal gradient page background */
+  min-height: 100vh;       /* page fills at least the full viewport height */
+  display: flex;           /* use flexbox so children stack vertically and can be centered */
+  flex-direction: column;  /* stack children top-to-bottom */
+  align-items: center;     /* center all direct children horizontally */
+  padding: 2rem 1rem 1.5rem; /* top / left-right / bottom breathing room around content */
+  color: #1e293b;          /* dark slate default text color */
+}
+
+
+/* ── Profile Header Card ────────────────────────────────────
+   The white card at the top showing the student's details.
+   ──────────────────────────────────────────────────────────── */
+
+.profile-header {
+  width: 100%;           /* stretch to fill the available width */
+  max-width: 820px;      /* but never wider than 820 px */
+  background: #ffffff;   /* solid white card background */
+  border: 1px solid #c7d2fe; /* soft indigo-tinted border */
+  border-radius: 14px;   /* rounded corners for a modern card look */
+  overflow: hidden;      /* clip child content (like the banner) to the rounded corners */
+  box-shadow: 0 4px 18px rgba(99, 102, 241, 0.10); /* subtle indigo drop shadow */
+  margin-bottom: 1.25rem; /* space between this card and the element below it */
+}
+
+.profile-banner {
+  background: linear-gradient(90deg, #4f46e5, #3b82f6); /* horizontal indigo-to-blue gradient banner */
+  padding: 0.75rem 1.5rem; /* vertical / horizontal inner spacing */
+}
+
+.profile-banner h1 {
+  color: #ffffff;          /* white heading text on the dark gradient banner */
+  font-size: 1.1rem;       /* slightly larger than body text */
+  font-weight: 700;        /* bold */
+  letter-spacing: 0.04em;  /* slight character spacing for a polished look */
+}
+
+.profile-grid {
+  display: grid;                        /* CSS Grid for the two-column profile layout */
+  grid-template-columns: 1fr 1fr;       /* two equal-width columns */
+  gap: 0 2rem;                          /* no vertical gap, 2rem horizontal gap between columns */
+  padding: 1rem 1.5rem 1.2rem;          /* inner spacing around the grid content */
+}
+
+/* Responsive breakpoint: collapse to a single column on small screens */
+@media (max-width: 580px) {
+  .profile-grid {
+    grid-template-columns: 1fr; /* single column on narrow viewports */
+  }
+}
+
+.profile-col {
+  display: flex;           /* flex container so rows stack vertically */
+  flex-direction: column;  /* stack child rows from top to bottom */
+  gap: 0;                  /* no extra space between rows (rows use their own padding) */
+}
+
+.profile-row {
+  display: flex;                  /* side-by-side label and value */
+  gap: 0.5rem;                    /* small space between the label and the value */
+  padding: 0.3rem 0;              /* vertical breathing room above and below each row */
+  border-bottom: 1px solid #f1f5f9; /* thin separator line between rows */
+  font-size: 0.85rem;             /* slightly smaller than body text */
+  align-items: flex-start;        /* align label and value at the top (useful if value wraps) */
+}
+
+.profile-row:last-child {
+  border-bottom: none; /* remove the separator from the last row to avoid a double border effect */
+}
+
+.label {
+  font-weight: 600;    /* semi-bold so labels stand out from values */
+  color: #1468dc;      /* muted slate color to visually separate label from value */
+  min-width: 175px;    /* fixed minimum width keeps all values aligned vertically */
+  flex-shrink: 0;      /* prevent the label from shrinking when space is tight */
+}
+
+.value {
+  color: #1e293b; /* dark slate – the actual student data text */
+}
+
+
+/* ── Instructions Bar ───────────────────────────────────────
+   A light-blue hint strip showing keyboard/mouse controls.
+   ──────────────────────────────────────────────────────────── */
+
+.instructions {
+  width: 100%;                        /* full available width */
+  max-width: 820px;                   /* match the profile card's max width */
+  display: grid;                      /* CSS Grid layout so each child gets an equal column */
+  grid-template-columns: repeat(5, 1fr); /* 5 equal-width columns – one per instruction */
+  gap: 1.6rem;                        /* space between each instruction box */
+  margin-bottom: 1.25rem;             /* space between the hints and the canvas below */
+}
+
+/* On smaller screens collapse to 2 columns, then 1 column */
+@media (max-width: 700px) {
+  .instructions {
+    grid-template-columns: 1fr; /* 2 columns on medium screens */
+  }
+}
+
+@media (max-width: 400px) {
+  .instructions {
+    grid-template-columns: 1fr; /* 1 column on very small screens */
+  }
+}
+
+/* Each <span> inside .instructions becomes its own distinct card box */
+.instructions span {
+  background: #ffffff;             /* white card background for contrast */
+  border: 1px solid #c7d2fe;       /* soft indigo border matching the overall theme */
+  border-radius: 10px;             /* rounded corners on every box */
+  padding: 0.55rem 0.75rem;        /* inner spacing so text doesn't touch the edges */
+  font-size: 0.80rem;              /* small readable text */
+  color: #3730a3;                  /* deep indigo text */
+  text-align: center;              /* center the text within each box */
+  display: flex;                   /* flex so content is vertically centered */
+  align-items: center;             /* vertically center multi-line text */
+  justify-content: center;         /* horizontally center the text */
+  box-shadow: 1 6px 6px rgba(99, 102, 241, 0.08); /* subtle shadow to lift each box */
+  transition: box-shadow 0.2s ease, background 0.2s ease; /* smooth hover effect */
+}
+
+/* Slight hover highlight so the boxes feel interactive */
+.instructions span:hover {
+  background: #819aea;             /* light indigo tint on hover */
+  box-shadow: 0 4px 12px rgba(24, 28, 255, 0.18); /* deeper shadow on hover */
+}
+
+
+
+/* ── Canvas Wrapper Card ────────────────────────────────────
+   The white card that wraps the decorative title bar and
+   the actual <canvas> drawing surface.
+   ──────────────────────────────────────────────────────────── */
+
+.canvas-wrapper {
+  width: 100%;               /* fill available width */
+  max-width: 820px;          /* consistent max width with the cards above */
+  background: #ffffff;       /* white card background */
+  border: 2px solid #a5b4fc; /* medium indigo border – slightly thicker for emphasis */
+  border-radius: 14px;       /* rounded corners */
+  overflow: hidden;          /* clip the canvas and title bar to the rounded corners */
+  box-shadow: 0 6px 28px rgba(99, 102, 241, 0.14); /* deeper shadow than the profile card */
+  margin-bottom: 1rem;       /* space below the canvas card */
+}
+
+/* Decorative title bar at the top of the canvas card,
+   styled to look like a browser window chrome */
+.canvas-titlebar {
+  background: #4f46e5;     /* solid indigo background */
+  padding: 0.5rem 1rem;    /* inner spacing */
+  display: flex;           /* row layout for the dots and title text */
+  align-items: center;     /* vertically center dots and title */
+  gap: 0.4rem;             /* small space between each dot */
+}
+
+/* Base style shared by all three decorative dots */
+.dot {
+  display: inline-block; /* required to apply width and height to a <span> */
+  width: 12px;           /* dot width */
+  height: 12px;          /* dot height */
+  border-radius: 50%;    /* make the square element into a circle */
+}
+
+/* Individual dot colors inspired by macOS window controls */
+.dot.red    { background: #f87171; } /* red dot  – represents "close" */
+.dot.yellow { background: #fbbf24; } /* yellow dot – represents "minimize" */
+.dot.green  { background: #0535e1; } /* green dot – represents "maximize" */
+
+.canvas-title {
+  margin-left: 0.75rem; /* extra left space to separate the title text from the dots */
+  color: #ffffff;        /* white text on the dark indigo bar */
+  font-size: 0.85rem;    /* small title text */
+  font-weight: 600;      /* semi-bold */
+}
+
+/* Styles for the <canvas> HTML element itself */
+#mainCanvas {
+  display: block;       /* removes the default inline gap below the canvas element */
+  width: 100%;          /* scales the canvas display to fill its container */
+                        /* NOTE: this is the CSS display size, not the drawing buffer size */
+  cursor: crosshair;    /* show a crosshair cursor on hover to hint that drawing is possible */
+  background: #fafafa;  /* very light grey canvas background */
+  outline: none;        /* remove the default focus ring that appears when the canvas is clicked */
+}
+
